@@ -23,6 +23,7 @@ var clickHandler = function(event){
     //console.log(event.target.checked);
     if(event.target.checked){
       password.type = 'text';
+      console.log("show password");
     } else {
        password.type = 'password';
     }
