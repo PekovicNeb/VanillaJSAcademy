@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin\Maintenace\Edit Login Details</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" href="css\style.css">
+</head>
+<body>
+	<div class="container">
+	<h1>Edit Login Details</h1>
+
+	<p>To edit your username and password you have to provide your password to authorise it.</p>
+
+		<div class="row">
+			<div class="column">
+				<form>
+					<div class="form-group">
+						<label for="username">Username</label>
+						<input type="text" class="form-control" name="username" id="username">
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" class="form-control username-password" name="password" id="password">
+					</div>	
+					<div class="form-group">
+						<label for="confirm-password">Confirm Password</label>
+						<input type="password" class="form-control username-password" name="confirm-password" id="confirm-password">
+					</div>
+			
+					<div class="checkbox">
+						<label for="toggle-username">
+							<input type="checkbox" name="show-password" id="toggle-username" data-pw-toggle="#password,#confirm-password">
+							Show password
+						</label>
+					</div>
+					<button type="submit" class="btn btn-default">Save Username</button>	
+				</form>	
+			</div>
+			<div class="column">
+				<from>
+				<div class="form-group">
+					<label for="old-password">Old Password</label>
+					<input type="password" class="form-control password" name="old-password" id="old-password">
+				</div>
+		
+				<div class="form-group">
+					<label for="new-password">New Password</label>
+					<input type="password" class="form-control password" name="new-password" id="new-password">
+				</div>
+		
+				<div class="form-group">
+					<label for="confirm-new-password">Confirm New Password</label>
+					<input type="password" class="form-control password" name="confirm-new-password" id="confirm-new-password">
+				</div>
+		
+				<div class="checkbox">
+					<label for="toggle-password">
+						<input type="checkbox" name="show-password" id="toggle-password" data-pw-toggle="#old-password,#new-password,#confirm-new-password">
+						Show password
+					</label>
+				</div>	
+				<button type="submit" class="btn btn-default">Save Password</button>				
+			</from>
+			</div>
+		</div>	
+</div>
+<script type="text/javascript" src="script\vanillaJS.js"></script>
+</body>
+</html>
