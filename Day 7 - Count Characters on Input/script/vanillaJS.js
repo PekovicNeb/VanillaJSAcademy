@@ -47,6 +47,7 @@ var newPasswordType = "";
 var toggle = document.querySelector('#show-password');  
 var securityAnswer = document.querySelector('#textSecurityAnswer');  
 var characterCount = document.querySelector('#character-count');
+var wordCount = document.querySelector('#word-count');
 //
 //Methods
 //
@@ -86,13 +87,16 @@ var clickHandler = function(event){
  * @param {Event} event The event object
  */
 var inputHandler = function(event){
-  countLetters(event.target.value);
+  countLettersAndWords(event.target.value);
 };
 
-var countLetters = function(answer){
+var countLettersAndWords = function(answer){
   characterCount.textContent = answer.length;
+   var words = answer.split(" ").filter(function(item){
+    return item !="";
+  });
+  wordCount.textContent = words.length;
 };
-
 
 //Event Listeners
 
