@@ -92,7 +92,7 @@ var inputHandler = function(event){
 
 var countLettersAndWords = function(answer){
   characterCount.textContent = answer.length;
-   var words = answer.split(" ").filter(function(item){
+   var words = answer.split(/[\n\r\s]+/g).filter(function(item){
     return item !="";
   });
   wordCount.textContent = words.length;
