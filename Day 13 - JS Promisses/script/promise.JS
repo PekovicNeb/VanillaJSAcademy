@@ -2,65 +2,103 @@
 //Variables
 //
 var btnCallback = document.querySelector('#btnPromiseCallback');
-var myCount = 0;
+var myTimeCount = 0;
 
 //
 //Methods
 //
 
 //click Handler
-
 var clickHandler = function(event){
     //console.log(event.target.getAttribute('id'));
+
+    //As click handler is on the document elemeent and most evenet bublle to the top 
+    //lets get event target id attribute value and pass it to the all function(s) 
+    //called in event Handler
     var btnClicked = event.target.getAttribute('id');
     btnPromiseCallback(btnClicked);
 };
 
-
+//
+// Set Timer ticking
+//
 var myCounter = function(){
     var myTimer = setInterval(function(){
-        myCount+=1;
+        myTimeCount+=1;
 
-        if (myCount> 15){
+        if (myTimeCount> 10){
             clearTimeout(myTimer)
         }
-        console.log(myCount);
+        console.log(myTimeCount);
     }, 1000);
 };
 
+// Call timer to display it
 myCounter();
 
-
+//
+// Function that check if the target clicked is matching our selected button 
+// before continue running
+//
 var btnPromiseCallback = function(btn){
-    //console.log(btnCallback);
+    //console.log(btn);
+    //console.log(btnCallback.getAttribute('id'));
     if (btn != btnCallback.getAttribute('id')) return;
-    console.log("Im checking promise status");
-    console.log(sayHello);
-    //if (sayHello.state =="pending") console.log("Still Awaiting Promise");
-    //if (sayHello.state =="fulfilled") console.log("Promise Resolved");
-    //if (sayHello.state =="rejected") console.log("Promise Rejected");
-    sayHello.then(function (msg) {
-        console.log(msg);
-        console.log(sayHello.state);
+
+    // Check State of the promise
+    console.log(myPromise.isFulfilled());
+
+    //After 5 seconds this will output result of resolve/or reject promise function 
+    myPromise.then(function (result) {
+        console.log(result);
     });
 }
+
+/**
+ * This function allow you to modify a JS Promise by adding some status properties.
+ * Based on: http://stackoverflow.com/questions/21485545/is-there-a-way-to-tell-if-an-es6-promise-is-fulfilled-rejected-resolved
+ * But modified according to the specs of promises : https://promisesaplus.com/
+ */
+function MakeQueryablePromise(promise) {
+    // Don't modify any promise that has been already modified.
+    if (promise.isFulfilled) return promise;
+    // Set initial state
+    var isPending = true;
+    var isRejected = false;
+    var isFulfilled = false;
+
+    // Observe the promise, saving the fulfillment in a closure scope.
+    var result = promise.then(
+        function(v) {
+            isFulfilled = true;
+            isPending = false;
+            return v; 
+        }, 
+        function(e) {
+            isRejected = true;
+            isPending = false;
+            return e; 
+        }
+    );
+
+    result.isFulfilled = function() { return isFulfilled; };
+    result.isPending = function() { return isPending; };
+    result.isRejected = function() { return isRejected; };
+    return result;
+};
 
 // Create a Promise object
 var sayHello = new Promise(function (resolve, reject) {
     // In 5 seconds, resolve the Promise.
     // Pass along "Hi, universe!" to any callback methods
     setTimeout(function () {
-        resolve('Hi, universe!');
-    }, 15000);
+        resolve('Hi, Helo Universe!');
+        reject('Hi, I did not complete my promise');
+    }, 6000);
 });
 
-// After 5 seconds, if the Promise resolves,
-// this will log "Hi, universe!" into the console
-//sayHello.then(function (msg) {
-//    console.log(msg);
-//});
-
-
+// Wrap promise to expand with its State that can be accessed syncronously.
+var myPromise = MakeQueryablePromise(sayHello);
 
 //
 //Event Listeners
