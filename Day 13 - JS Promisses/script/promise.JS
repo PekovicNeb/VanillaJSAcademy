@@ -47,10 +47,11 @@ var btnPromiseCallback = function(btn){
 
     // Check State of the promise
     console.log(myPromise.isFulfilled());
-
     //After 5 seconds this will output result of resolve/or reject promise function 
     myPromise.then(function (result) {
         console.log(result);
+    }).catch(function(err){
+        console.warn(err);
     });
 }
 
@@ -93,7 +94,6 @@ var sayHello = new Promise(function (resolve, reject) {
     // Pass along "Hi, universe!" to any callback methods
     setTimeout(function () {
         resolve('Hi, Helo Universe!');
-        reject('Hi, I did not complete my promise');
     }, 6000);
 });
 
