@@ -37,7 +37,8 @@ var renderArticle = function(articles){
     console.log(articles);
 
     app.innerHTML = articles.map(function(article){
-        return '<li><a href="' + article.url + '">' + article.title + '</a></li>'
+        var html = '<li><a href="' + article.url + '">' + article.title + '</a></li>';
+        return html;
     }).join('') + '</ul>';
 }
 
