@@ -37,6 +37,17 @@ var shuffle = function (array) {
 	return array;
 };
 
+/**
+ * Sanitize and encode all HTML in a user-submitted string
+ * https://portswigger.net/web-security/cross-site-scripting/preventing
+ * @param  {String} str  The user-submitted string
+ * @return {String} str  The sanitized string
+ */
+var sanitizeHTML = function (str) {
+	return str.replace(/[^\w. ]/gi, function (c) {
+		return '&#' + c.charCodeAt(0) + ';';
+	});
+};
 
 //click Handler
 var clickHandler = function(event){
@@ -90,21 +101,6 @@ var getNYTTopStory = function(category){
         })
 }
 
-
-/*!
- * Convert a string to title case
- * source: https://gist.github.com/SonyaMoisset/aa79f51d78b39639430661c03d9b1058#file-title-case-a-sentence-for-loop-wc-js
- * @param  {String} str The string to convert to title case
- * @return {String}     The converted string
- */
-var toTitleCase = function (str) {
-	str = str.toLowerCase().split(' ');
-	for (var i = 0; i < str.length; i++) {
-		str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
-	}
-	return str.join(' ');
-};
-
 //
 // Render retrurned API data (after json()) and convert into "article" format 
 //
@@ -114,7 +110,7 @@ var renderArticle = function(category, articles){
     var randomArticles = shuffle(articles);
 
     app.innerHTML += '<h2>' + category +'</h2><ul>' + articles.slice(0,6).map(function(article){
-        var list = '<li><a href="' + article.url + '">' + article.title + '</a></li>';
+        var list = '<li><a href="' + sanitizeHTML(article.url) + '">' + sanitizeHTML(article.title) + '</a></li>';
         return list;
     }).join('') + '</ul>';
 }
