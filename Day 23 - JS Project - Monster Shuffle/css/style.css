@@ -19,3 +19,9 @@ img {
 	height: auto;
 	max-width: 100%;
 }
+
+button{
+	width:20%;
+    margin-left:40%;
+    margin-right:40%;
+}

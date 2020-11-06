@@ -3,6 +3,9 @@
 //
 var btnMixMonsters = document.querySelector('#MixMonsters');
 var app =  document.querySelector('#app');
+var door = 'door';
+var score = 0;
+
 
 var monsters = [
     'monster1',
@@ -19,7 +22,7 @@ var monsters = [
     'sock'
 ];
 
-var url='https://gist.githubusercontent.com/cferdinandi/3e6b13f1e501e50ce90e92e1f6241258/raw/0891e58c68be46e5d6a6fc8b513ddc016c9d8ebb/';
+var url='https://gist.githubusercontent.com/cferdinandi/b216c6c06685a381ec5bd547410d76c1/raw/ea404869e2c3b02738b36ccb9d82921f80cbf2bd/';
 //
 //Methods
 //
@@ -56,28 +59,52 @@ var clickHandler = function(event){
     //As click handler is on the document elemeent and most evenet bublle to the top 
     //lets get event target id attribute value and pass it to the all function(s) 
     //called in event Handler
-    var btnClicked = event.target.getAttribute('id');
+    var btnClicked = event.target;
+
+    //console.log(btnClicked.closest('.grid'));
+  //  console.log(event.target.closest('.grid'));
     btnShuffleMonsters(btnClicked);
+    ShowMonster(btnClicked);
+
 };
 
 var btnShuffleMonsters = function(btnClicked){
-    if(btnClicked != btnMixMonsters.getAttribute('id')) return;
-    ShowMonsters();
+    if(btnClicked.getAttribute('id') != btnMixMonsters.getAttribute('id')) return;
+    HideMonsters();
 };
 
 
-var ShowMonsters = function(){
+var HideMonsters = function(){
+    score = 0;
     var html = '<div class="row">';
     html += shuffle(monsters).map(function(monster){
-        var img = '<div class = "grid"><img src ="' + url + monster + '.svg" /></div>';
+        var img = '<div class = "grid"><img id='+ monster + ' src ="' + url + door + '.svg" /></div>';
         return img;
     }).join('') + "</div>";
     //console.log(html);
     app.innerHTML = html;
 };
 
+var ShowMonster = function(btnClicked){
+    //console.log(btnClicked);
+    if(btnClicked.getAttribute('src') == null) return;
+    btnClicked.setAttribute('src',url + btnClicked.getAttribute('id')  + '.svg');
+    
+    if (btnClicked.getAttribute('id') != 'sock'){
+        score +=1;
+        console.log(btnClicked); //.getAttribute('id'));
+        console.log('score=' + score);
+    } else {
+        alert('You Lost, Shullfe Monsters Again');
+        score = 0;
+    }
 
-ShowMonsters();
+    if (score == 11){
+        alert('You Won');
+    }
+}
+
+HideMonsters();
 
 //
 //Event Listeners
