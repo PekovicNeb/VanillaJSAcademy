@@ -75,6 +75,8 @@ var btnShuffleMonsters = function(btnClicked){
 
 
 var HideMonsters = function(){
+    // remove WIN/LOST message
+    off();
     score = 0;
     var html = '<div class="row">';
     html += shuffle(monsters).map(function(monster){
@@ -92,17 +94,27 @@ var ShowMonster = function(btnClicked){
     
     if (btnClicked.getAttribute('id') != 'sock'){
         score +=1;
-        console.log(btnClicked); //.getAttribute('id'));
-        console.log('score=' + score);
     } else {
-        alert('You Lost, Shullfe Monsters Again');
         score = 0;
+        on("GAME OVER")
     }
 
     if (score == 11){
-        alert('You Won');
+        on("YOU WON")
     }
 }
+
+var on = function(msg){
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("text").textContent = msg;
+}
+var off = function(){
+    document.getElementById("overlay").style.display = "none";
+}
+
+//
+// Init
+//
 
 HideMonsters();
 
