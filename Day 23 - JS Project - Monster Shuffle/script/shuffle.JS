@@ -80,7 +80,8 @@ var HideMonsters = function(){
     score = 0;
     var html = '<div class="row">';
     html += shuffle(monsters).map(function(monster){
-        var img = '<div class = "grid"><img id='+ monster + ' src ="' + url + door + '.svg" /></div>';
+        var img = '<div class = "grid" aria-live = "polite"><button data-monster-id="' + monster + '">'
+            + '<img alt ="Click the door to see what\'s behind it" src ="' + url + door + '.svg" /></button></div>';
         return img;
     }).join('') + "</div>";
     //console.log(html);
@@ -88,18 +89,22 @@ var HideMonsters = function(){
 };
 
 var ShowMonster = function(btnClicked){
-    //console.log(btnClicked);
-    if(btnClicked.getAttribute('src') == null) return;
-    btnClicked.setAttribute('src',url + btnClicked.getAttribute('id')  + '.svg');
+   // console.log(btnClicked);
+    var btn = btnClicked.closest('[data-monster-id]');
+
+    if(!btn) return;
+
+    var id = btn.getAttribute('data-monster-id');
+    btn.parentNode.innerHTML = '<img alt = "You discovered ' + id + '" src="' + url + id  + '.svg" />';
     
-    if (btnClicked.getAttribute('id') != 'sock'){
-        score +=1;
+    if (id != 'sock'){
+        score ++;
     } else {
         score = 0;
         on("GAME OVER")
     }
 
-    if (score == 11){
+    if (score === (monsters.length -1)){
         on("YOU WON")
     }
 }
