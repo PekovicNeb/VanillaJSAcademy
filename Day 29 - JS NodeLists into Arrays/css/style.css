@@ -1,0 +1,53 @@
+body{
+	font-family: Arial
+}
+/**
+ * A simple grid layout
+ */
+ .row {
+	display: grid;
+	grid-template-columns: auto auto auto;
+    text-align: center;
+}
+.grid{
+	min-height: 6em;
+	padding: 1em;
+}
+
+/**
+ * Make sure images scale
+ */
+img {
+	height: auto;
+	max-width: 100%;
+}
+
+button{
+	width:20%;
+    margin-left:40%;
+    margin-right:40%;
+}
+
+#overlay {
+	position: fixed;
+	display: none;
+	width: 80%;
+	height: 20%;
+	top: 20%;
+	left: 10%;
+	right: 10%;
+	bottom: 0;
+	background-color: rgba(224, 190, 79, 0.425);
+	z-index: 2;
+	cursor: pointer;
+  }
+  
+  #text{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 6em;
+	color: rgb(14, 7, 7);
+	transform: translate(-50%,-50%);
+	-ms-transform: translate(-50%,-50%);
+  }
