@@ -1,8 +1,7 @@
 //
 //Variables
 //
-var contentHeaders = document.querySelectorAll('h2');
-var content = document.querySelector('#table-of-contents');
+
 //
 //Methods
 //
@@ -11,14 +10,22 @@ var content = document.querySelector('#table-of-contents');
 // }
 
 var SetPageContents = function(){
+//
+//Local Variables kept outside of the global scope
+//
+    var contentHeaders = document.querySelectorAll('h2');
+    var content = document.querySelector('#table-of-contents');
+
     var contents = Array.prototype.slice.call(contentHeaders);
-    var html='<ul>';
+    var html='<ol>';
     contents.forEach(function(h2,index){
-        html +='<li><a href="#'+h2.getAttribute('id')+ '" id="'+ index +'">' + h2.textContent+'</a></li>'
-        return html;
+        if(h2.id.length<1){
+            //console.log(h2.textContent);
+            h2.setAttribute('id',h2.textContent.replace(/[^a-z0-9]+/gi,'-'));  
+        }
+            html +='<li><a href="#'+h2.getAttribute('id')+ '" id="'+ index +'">' + h2.textContent+'</a></li>';
     });
-    html +='</ul>';
-  //  console.log(html);
+    html +='</ol>';
    content.innerHTML = html;
 }
 
