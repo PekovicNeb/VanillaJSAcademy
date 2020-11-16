@@ -1,0 +1,36 @@
+html, body, #app{
+	font-family: Arial;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.centered {
+	text-align: center;
+	}
+	
+button{
+
+	padding: 10px;
+	margin: 5px;
+	border: 2px solid white;
+	color: white;
+	font-size: 1em;
+}
+
+img {
+
+	padding: 0px;
+	border-right: 3px solid black;
+	margin-right: 50px;
+	vertical-align: middle;
+}
+
+span {
+	font-size: 1.5em;
+}
+#current-temp:after{
+	content: "\00b0";
+	margin-right: 20px;
+  }
