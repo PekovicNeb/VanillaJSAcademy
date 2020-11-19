@@ -1,8 +1,7 @@
 //
 //Variables
 //
-var curLocationUrl='https://ipapi.co/json?__cf_chl_captcha_tk__=d1beb636ffe9d3d8b23f9b745fac6937fb6260d7-1605562397-0-AexfqKKOO3R3JfbEVHAPF0kpH3lAp95s_Ax-Xodb7Iub8dmQx53wXbi15Hdr21okLfFqxUCnSd9YuHPDsUwAVwfquN4T2FvODNivmGQVPdtQom8qteNzCczKEHTYh-A5iIYiWK62VVhy7gtclDeOm0M6ZjRP-DqrZPkCsMDQLTnA6NKxVtTJb2IMFnUAMjO6g73Jf7BThT6CfkuIG8HiKGw7oU6nege-e1RbLjNMByrplHZv1dIubQfosP10vC6zoJfqkDQ0FQwx61CRgL0adhqYyCTqwQmgUZokR4U34zuZ4XiWVs5gFJ5usMIYQjskUlHX9ycsLw7hUcizy8BIAtMOK2oCVTA1Yj77cEL28hScBhOqVO6CIUw8At1IgR6XRzyOaqqIs8SiJr0XiK82qbx321XXlY-xGzGgfHGi4WUvc5vLyhCRCeLkGpZdxHawIIe0Qp3XYxQMJv7a69bS2X97LdynHw9R7O-EtfNGH9VfXQfiqA0eeb80IkRxidLbhZ9Y-vQVt3hMdHNJN6a4VUIOmWpiACAMU1cp4wZW1VZP3cNEZ9QcIhUQDm15zDr0uw';
-
+var curLocationUrl='https://ipapi.co/json';
 var weatherAPIKey = '47f45cb8a6364f779c2dafe875f7427d';
 var weatherbitIconUrl = 'https://www.weatherbit.io/static/img/icons/';
 
@@ -17,11 +16,45 @@ var sanitizeHTML = function (str) {
 	});
 };
 
+var showConfig = function (event){
+    console.log(event.target);
+
+    if(event.target.getAttribute('id') != 'config') return;
+    document.getElementById("row").classList.add("show");
+}
+
+var changeConfig = function(event){
+    if (event.target.getAttribute('name') != 'selectorProp' && event.target.getAttribute('name') != 'tempProp' && event.target.getAttribute('name') != 'descProp' && event.target.getAttribute('name') != 'iconProp' ) return;
+   // console.log(event.target.getAttribute('id'));
+   // var prop = event.target.getAttribute('name');
+   // var val = event.target.getAttribute('id')
+    var userConfig = {};
+    // get all config values and populate userConfig
+    var configs = Array.prototype.slice.call(document.querySelectorAll('.config')).map(function(config){
+        //console.log(config);
+        if (config.checked!=false){
+            var prop = config.name;
+            var val = config.id;
+           /// console.log(prop, val);
+            userConfig[prop]=val;
+        }
+    });
+    getCurrentLocationWeather(userConfig);
+}
 
 //
 // Fetch API to ger Current Loaction and then nest API call to get weather info
 //
-var getCurrentLocationWeather = function(){
+var getCurrentLocationWeather = function(props){
+    var defaults = {
+        selectorProp:'B',
+        tempProp:'C',
+        descProp:'L',
+        iconProp:'I'
+    }
+
+    var newDefaults=Object.assign(defaults,props);
+    console.log(newDefaults);
     //Basix syntax fetch return promise so we can use then and catch
     fetch(curLocationUrl).then(function(APIresponse){
 
@@ -55,27 +88,55 @@ var getCurrentLocationWeather = function(){
         //console.log(WeatherAPIdata.data[0].app_temp);
         console.log(locationData);
     //  renderWeather(category, APIdata.results);
-        renderWeather(locationData, WeatherAPIdata.data[0]);
+        renderWeather(locationData, WeatherAPIdata.data[0], newDefaults);
 
     }).catch(function(err){
         console.warn("Something went wrong.", err);
     })
 }
 
-// var clickHandler = function(){
+var CtoF = function(temp){
+    return (parseFloat(temp) * 9 / 5) + 32;
+}
 
-// }
-
-var renderWeather = function(location, weather){
+var renderWeather = function(location, weather, props){
 //
 //Local Variables kept outside of the global scope
 //
     var content = document.querySelector('#weather');
+    document.querySelector('#weatherTop').innerHTML='';
+    if(props.selectorProp =='T'){
+        content = document.querySelector('#weatherTop');
+        document.querySelector('#weather').innerHTML='';
+    }
+
     var html= '<div><h2>'  + sanitizeHTML(location.city) +'</h2></div>';
-    html += '<img src="' + sanitizeHTML(weatherbitIconUrl)+ sanitizeHTML(weather.weather.icon) + '.png"/>';
-    html += '<span id="current-temp">' + weather.app_temp + '</span>';
-    html += '<span>' + sanitizeHTML(weather.weather.description) + '</span>';
-   content.innerHTML = html;
+
+    if (props.tempProp=='F'){
+        weather.app_temp = CtoF(weather.app_temp);
+    }
+
+    if (props.iconProp == 'I'){
+        html += '<img src="' + sanitizeHTML(weatherbitIconUrl)+ sanitizeHTML(weather.weather.icon) + '.png"/>';
+    }
+   
+    if (props.descProp =='L'){
+        html += '<span id="current-temp"> It is currently ' + weather.app_temp + '</span>';
+        html += '<span>' + props.tempProp + ' degrees with conditions ' + sanitizeHTML(weather.weather.description) + '</span>';    
+    } else {
+        html += '<span id="current-temp">' + weather.app_temp + '</span>';
+        html += '<span>' + sanitizeHTML(weather.weather.description) + '</span>';
+    }
+
+    content.innerHTML = html;
+}
+
+var clickHandler = function(event){
+    //var eventId= event.target.getAttribute('id')
+    //console.log(event.target.getAttribute('id'));
+    showConfig(event);
+    changeConfig(event);
+
 }
 
 //
@@ -87,4 +148,5 @@ getCurrentLocationWeather();
 //
 //Event Listeners
 //
-//document.addEventListener('click',clickHandler);
+
+document.addEventListener('click',clickHandler);

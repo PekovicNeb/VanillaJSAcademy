@@ -18,10 +18,57 @@
 	</head>
 
 	<body>
+
 	<div id="app">
+		
 		<div class="centered">
+			<div id="weatherTop">#appHere</div>
 			<h1>Weather App</h1>
-			<p >Checking the weather near you...</p>
+			<p>Checking the weather near you...</p>
+			<button id="config">Change weather display here...</button>
+			<div class="row" id="row">
+				<div class="grid">
+					<label> At the bottom of the page
+						<input type="radio" class = "config" checked="checked" id="B" name="selectorProp">
+					</label>
+				</div>
+				<div class="grid">
+					<label> At the top of the page
+						<input type="radio" class = "config" id="T" name="selectorProp">
+					</label>
+				</div>
+				<div class="grid">
+					<label> Temperature in Celsius
+						<input type="radio" class = "config" checked="checked" id="C" name="tempProp">
+					</label>
+				</div>
+				<div class="grid">
+					<label> Temperature in Fahrenheit
+						<input type="radio" class = "config" id="F" name="tempProp">
+					</label>
+				</div>
+				<div class="grid">
+					<label> Long description
+						<input type="radio" class = "config" checked="checked" id="L" name="descProp">
+					</label>
+				</div>
+				<div class="grid">
+					<label> Short description
+						<input type="radio" class = "config" id="S" name="descProp"> 
+					</label>
+				</div>
+				<div class="grid">
+					<label> Show Icon
+						<input type="radio" class = "config" checked="checked" id="I" name="iconProp">
+					</label>
+				</div>
+				<div class="grid">
+					<label> Hide Icon
+						<input type="radio" class = "config" id="N" name="iconProp">
+					</label>
+				</div>
+			</div>
+
 			<div id="weather"></div>
 		</div>
 	</div>

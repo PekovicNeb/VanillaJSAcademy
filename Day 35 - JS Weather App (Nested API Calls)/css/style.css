@@ -15,7 +15,7 @@ button{
 	padding: 10px;
 	margin: 5px;
 	border: 2px solid white;
-	color: white;
+	color: rgb(10, 10, 10);
 	font-size: 1em;
 }
 
@@ -32,5 +32,24 @@ span {
 }
 #current-temp:after{
 	content: "\00b0";
-	margin-right: 20px;
+	/*margin-right: 20px;*/
   }
+
+ /**
+ * A simple grid layout
+ */
+ .row {
+	display: none;
+	grid-template-columns: auto auto;
+    text-align: center;
+}
+.grid{
+	min-height: 1em;
+	padding: 1em;
+}
+ 
+.show{
+	display: grid;
+	grid-template-columns: auto auto;
+    text-align: center;
+}
