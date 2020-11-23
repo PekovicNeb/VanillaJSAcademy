@@ -15,42 +15,35 @@ var _ = (function(){
     //Methods
     //
 
-    var copy = function(arr){
-        return arr.slice();
-    }
     // Holds our public Constructor
     var Constructor = function(selector){
-        this.selector = selector;
+        //this.selector = selector;
         this.elements = document.querySelectorAll(selector);
     };
 
-    Constructor.prototype.toArray = function(list){
-        return Array.prototype.slice.call(list);
+    Constructor.prototype.toArray = function(){
+        return Array.prototype.slice.call(this.elements);
     };
 
-    Constructor.prototype.getElements = function(){
-        return this.toArray(document.querySelectorAll(this.selector));
-    };
-
-    Constructor.prototype.addClass = function(cls){
-        this.getElements().forEach(function(element){
-            element.classList.add(cls);
+    Constructor.prototype.addClass = function(className){
+        this.toArray().forEach(function(element){
+            element.classList.add(className);
         });
     };
 
-    Constructor.prototype.removeClass = function(cls){
-        this.getElements().forEach(function(element){
-            element.classList.remove(cls);
+    Constructor.prototype.removeClass = function(className){
+        this.toArray().forEach(function(element){
+            element.classList.remove(className);
         });
     };
 
     Constructor.prototype.getFirstElement = function(){
-        return document.querySelector(this.selector);
+        return this.elements[0];
     };
 
     Constructor.prototype.getLastElement = function(){
-        var lastIndex = this.getElements().length;
-        return this.getElements()[lastIndex - 1];
+        var lastIndex = this.elements.length;
+        return this.elements[lastIndex - 1];
     };
 
     return Constructor;
