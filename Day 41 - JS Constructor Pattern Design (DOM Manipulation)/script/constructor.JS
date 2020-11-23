@@ -29,12 +29,15 @@ var _ = (function(){
         this.toArray().forEach(function(element){
             element.classList.add(className);
         });
+        return this;
     };
 
     Constructor.prototype.removeClass = function(className){
         this.toArray().forEach(function(element){
             element.classList.remove(className);
         });
+        // make this function chainable by returning this
+        return this;
     };
 
     Constructor.prototype.getFirstElement = function(){
