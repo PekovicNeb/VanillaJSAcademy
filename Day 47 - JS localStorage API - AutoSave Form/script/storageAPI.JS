@@ -19,7 +19,10 @@
 		}
 
 		var clearFormData = function(event){
-			if(event.target.type != 'submit') return;
+
+			console.log(event.target.id);
+
+			//if(event.target.type != 'submit') return;
 			console.log('clear storage data and form');
 			var i=0;
 			// Clear Form Data and remove localStorage values
@@ -36,10 +39,18 @@
 		var clickHandler = function (event) {
 			// Stop form re-submitting/page reload
 			event.preventDefault();
+
+			if(event.target.id !='save-me') return;
+
+			// go and clear data
 			clearFormData(event);
 		};
 
 		var inputHandler = function (event) {
+
+			// to add if closest is .save-me form only then save to local storage
+			// had it so must have dropped earlier.
+
 			var inputName = event.target.getAttribute('id');
 			var inputVal = event.target.value;
 
@@ -56,5 +67,6 @@
 		populateFormFromStorage();
 
 		// Listen for click events
-		document.addEventListener('click', clickHandler, false);
+		// to listen for form submisison listed for 'submit' event not as my original click.
+		document.addEventListener('submit', clickHandler, false);
 		document.addEventListener('input', inputHandler, false);
