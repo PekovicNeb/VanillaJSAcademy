@@ -3,7 +3,7 @@
 //
 var app = document.querySelector('#app');
 var url = 'https://vanillajsacademy.com/api/pirates.json';
-var cacheFor = 1000 * 60 * 5; // 5 minutes
+var cacheFor = 1000 * 30; // 30 seconds
 var cachedPirateNewsData = JSON.parse(localStorage.getItem('PirateNews'));
 
 // when API data returned set this variable
@@ -90,11 +90,15 @@ var callPirateAPI = function(){
 var renderArticle = function(APIdata){
     //console.log(APIdata);
     
-    app.innerHTML = '<h2>' + APIdata.attribution['name'] +'</h2> <ul>' + APIdata.articles.map(function(article){
-        var list = '<li><strong>' + sanitizeHTML(article.title) + '</strong></br>';
-        list += sanitizeHTML(article.article) + '</li>';
-        return list;
-    }).join('') + '</ul>'; 
+    app.innerHTML = APIdata.articles.map(function(article){
+        var html = '<article>' + 
+            '<h2>' + sanitizeHTML(article.title) + '</h2>' +
+            '<p><em>By' + sanitizeHTML(article.author) + ' on ' +
+            sanitizeHTML(article.pubdate) + '</em></p>' +
+            sanitizeHTML(article.article);
+        return html;
+    }).join('') + '<p><em>Articles from <a href="' + sanitizeHTML(APIdata.attribution.url) + '">' +
+    sanitizeHTML(APIdata.attribution.name) + '</a></em></p>'; 
 }
 
 getPiratesNews();
