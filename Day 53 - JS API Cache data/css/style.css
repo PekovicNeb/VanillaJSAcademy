@@ -1,0 +1,9 @@
+h2 {
+    text-transform: capitalize;
+}
+body {
+    max-width: 40em;
+    width: 88%;
+    margin: 1em auto;
+
+}
