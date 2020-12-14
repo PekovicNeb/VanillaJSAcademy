@@ -3,7 +3,7 @@
 //
 var app = document.querySelector('#app');
 var url = 'https://vanillajsacademy.com/api/pirates.json';
-var cacheFor = 1000 * 30; // 30 seconds
+var cacheFor = 1000 * 5; // 30 seconds
 var cachedPirateNewsData = JSON.parse(localStorage.getItem('PirateNews'));
 
 // when API data returned set this variable
@@ -15,6 +15,16 @@ var PirateNews = {
 //
 //Methods
 //
+/**
+ * Dynamically vary the API endpoint
+ * @return {String} The API endpoint
+ */
+var getEndpoint = function () {
+	var endpoint = 'https://vanillajsacademy.com/api/';
+	var random = Math.random();
+	if (random < 0.5) return endpoint + 'pirates.json';
+	return endpoint + 'fail.json';
+};
 
 /**
  * Sanitize and encode all HTML in a user-submitted string
@@ -55,8 +65,8 @@ var isCachedDataValid = function(){
 
 var callPirateAPI = function(){
         //Basic syntax fetch return promise so we can use then and catch
-        fetch(url).then(function(APIresponse){
-
+        //fetch(url).then(function(APIresponse){
+        fetch(getEndpoint()).then(function(APIresponse){
             //return APIresponse.json();
             if (APIresponse.ok){
                 //The API call was successful!
@@ -75,12 +85,18 @@ var callPirateAPI = function(){
             // save to localStorage
             localStorage.setItem('PirateNews', JSON.stringify(PirateNews));
 
-
             renderArticle(APIdata);
             
         }).catch(function(err){
-            app.innerText = "[Something went wrong.]";
-            console.warn("Something went wrong.", err);
+
+            if(!cachedPirateNewsData){
+                app.innerText = "[Something went wrong.]";
+                console.warn("Something went wrong.", err);
+            }else {
+                console.log("API Failed so rendered from local storage regardless if data expired.");
+                renderArticle(cachedPirateNewsData['data']); 
+            }
+         
         })
 }
 
