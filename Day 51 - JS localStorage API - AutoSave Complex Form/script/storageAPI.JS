@@ -11,17 +11,7 @@
 		//
 
 		var populateFormFromStorage = function(){
-
-/* 			formFields.forEach(function(field){
-				var id = getId(field);
-				if(!id) return;
-
-				// get saved localStorage
-				var savedValue = localStorage.getItem(storagePrefix + id);
-				if(!savedValue) return;
-				field.value= savedValue;
-			}); */
-
+			console.log("populating from local storage")
 			var formSaved = localStorage.getItem(storageId);
 			if(!formSaved) return;
 
@@ -32,11 +22,16 @@
 
 				if(!formSaved[id]) return;
 
-				if(field.type == 'radio' && field.value == formSaved[id]){
-					field.checked = true;
+				if(field.type == 'radio') {
+					if (field.value == formSaved[id]){
+						field.checked = true;
+					}
+				}else if (field.type == 'checkbox'){
+					field.checked = formSaved[id];
 				}
-
-				field.value= formSaved[id];
+				else {
+					field.value= formSaved[id];
+				}
 			});
 
 		}
@@ -55,14 +50,10 @@
 		}
 
 		var saveFormData = function(){
-			
-
-			console.log(formFields);
-
 			var getValues={};
 			formFields.forEach(function(field){
 
-				if((field.type == 'radio' || field.type == 'checkbox')  && field.checked){
+				if(field.type == 'radio' && field.checked){
 					getValues[field.name]= field.value;
 				} else if(field.type == 'text') {
 					getValues[field.name]= field.value;
@@ -88,7 +79,7 @@
 
 			if(event.target.id !='save-me') return;
 
-			saveFormData();
+		//	saveFormData();
 			// go and clear data
 			clearFormData();
 		};
@@ -106,7 +97,22 @@
 			if(!id) return;
 
 			//var inputName = event.target.getAttribute('id');
-			var inputVal = event.target.value;
+			var inputVal;
+			
+	 		if(event.target.type =='radio' && event.target.checked ){
+				inputVal= event.target.value;
+				console.log('radio here');
+			}
+			else if(event.target.type =='checkbox' ){
+				inputVal= event.target.checked;
+				console.log('check here');
+			}
+			else {
+				inputVal= event.target.value;
+				console.log('input here');
+			};
+			 
+	
 			// save individual fields 
 			localStorage.setItem(storagePrefix + id,inputVal);
 			//sessionStorage.setItem(storagePrefix + id,,inputVal);
