@@ -1,7 +1,7 @@
 //
 //Variables
 //
-var timeDuration = 5;
+var timeDuration = 120;
 var timer;
 
 //
@@ -54,12 +54,15 @@ var UITimer = new myUI('#app',{
     // template
         template : function (props){
             //var html = '<input type="text" value="' + props.count +'" readonly>';
+            var minutes = parseInt(props.count/60,10).toString() 
+            var seconds = (props.count % 60).toString().padStart(2,'0');
+            
             var html 
             
             if (props.count < 1){
                 html = '<p><button data-restart-timer>Restart Timer</button></p>';
             }else {
-               html = '<div>' + props.count + '</div>'
+               html = '<div>' + minutes + ' : ' + seconds +  '</div>'
             } 
             return html
         }
