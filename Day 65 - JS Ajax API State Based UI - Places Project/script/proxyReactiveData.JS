@@ -58,12 +58,25 @@ var getNoPlacesHTML = function(){
 }
 
 var getPlacesHTML = function(props){
+ 
+
+
     var html = '<div class="row">';
     props.places.map(function (place) {
-             html+='<div class = "grid" ><p><a href="' + place.url + '">'+ place.place + '</a></p>';
-             html+='<img src="' + place.img + '"/>';
-             html+='<p>' + place.description + '</p></div>';  
-          }).join('') + '</div>';
+        // check if local Storage key exists and read the value
+        var ariaPressedValue;
+        if(!localStorage.getItem(place.place)){
+            ariaPressedValue = "false";
+        } else {
+            ariaPressedValue = localStorage.getItem(place.place);
+        }
+
+
+        html+='<div class = "grid" ><p><a href="' + place.url + '">'+ place.place + '</a></p>';
+        html+='<img src="' + place.img + '"/>';
+        html+='<p>' + place.description + '</p>';  
+        html+='<button id="' + place.place + '" class="fave" aria-label="Favorite" aria-pressed="'+ ariaPressedValue+'">❤</button></div>'
+    }).join('') + '</div>';
     return html;
 }        
 
@@ -101,6 +114,28 @@ var getPlaces = function(){
         UIPlaces.data.places= null;
     });
 }  
+
+var setFavourite = function(target){
+    if(!target.closest('.fave')) return;
+
+    //toggle attribute aria-pressed
+    if(target.getAttribute('aria-pressed') == "false"){
+        target.setAttribute('aria-pressed', true);
+        // set local storage 
+        localStorage.setItem(target.id, "true");
+
+    }else{
+        target.setAttribute('aria-pressed', false);
+        localStorage.setItem(target.id,"false");
+    }
+    
+
+}
+
+var clickHandler = function(event){
+    setFavourite(event.target);
+}
+
 //
 // Inits
 //
@@ -109,4 +144,4 @@ getPlaces();
 //
 //Event Listeners
 //
-//document.addEventListener('click',clickHandler);
+document.addEventListener('click',clickHandler);

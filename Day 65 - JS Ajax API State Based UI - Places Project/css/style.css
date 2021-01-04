@@ -24,3 +24,7 @@ img {
 	height: auto;
 	max-width: 100%;
 }
+
+.fave[aria-pressed="true"] {
+	color: red;
+}
