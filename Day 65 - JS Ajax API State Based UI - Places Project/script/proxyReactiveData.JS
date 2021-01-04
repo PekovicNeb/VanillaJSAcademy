@@ -2,6 +2,8 @@
 //Variables
 //
 var APIurl = 'https://vanillajsacademy.com/api/places.json';
+var favesID = 'exploreFaves';
+
 //
 //Methods
 
@@ -75,7 +77,7 @@ var getPlacesHTML = function(props){
         html+='<div class = "grid" ><p><a href="' + place.url + '">'+ place.place + '</a></p>';
         html+='<img src="' + place.img + '"/>';
         html+='<p>' + place.description + '</p>';  
-        html+='<button id="' + place.place + '" class="fave" aria-label="Favorite" aria-pressed="'+ ariaPressedValue+'">❤</button></div>'
+        html+='<button id="' + place.place + '" class="fave" aria-label="Save ' +place.place+'" aria-pressed="'+ props.faves[place.place]+'">❤</button></div>'
     }).join('') + '</div>';
     return html;
 }        
@@ -97,6 +99,11 @@ var UIPlaces = new Reef('#app',{
     });
 
 
+var getFaves = function () {
+    var faves = localStorage.getItem(favesID);
+    var favesObj = faves ? JSON.parse(faves) : {};
+    return favesObj;
+};
 
 // Fetch data from the API
 var getPlaces = function(){
@@ -109,9 +116,11 @@ var getPlaces = function(){
         // Reactively update the data
         // console.log(data);
         UIPlaces.data.places = data;
+        UIPlaces.data.faves = getFaves();
     }).catch(function(err){
         console.warn(err);
         UIPlaces.data.places= null;
+        UIPlaces.data.faves = null;
     });
 }  
 
@@ -119,23 +128,27 @@ var setFavourite = function(target){
     if(!target.closest('.fave')) return;
 
     //toggle attribute aria-pressed
-    if(target.getAttribute('aria-pressed') == "false"){
-        target.setAttribute('aria-pressed', true);
-        // set local storage 
-        localStorage.setItem(target.id, "true");
-
-    }else{
-        target.setAttribute('aria-pressed', false);
-        localStorage.setItem(target.id,"false");
-    }
-    
+    UIPlaces.data.faves[target.id] = UIPlaces.data.faves[target.id] ? false : true;
 
 }
+
+
+var saveFaves = function (faves) {
+	localStorage.setItem(favesID, JSON.stringify(faves));
+};
+
 
 var clickHandler = function(event){
     setFavourite(event.target);
 }
 
+
+var renderHandler = function (event) {
+
+	// Save favorites to localStorage on render
+	saveFaves(UIPlaces.data.faves);
+
+};
 //
 // Inits
 //
@@ -145,3 +158,4 @@ getPlaces();
 //Event Listeners
 //
 document.addEventListener('click',clickHandler);
+document.addEventListener('render', renderHandler);

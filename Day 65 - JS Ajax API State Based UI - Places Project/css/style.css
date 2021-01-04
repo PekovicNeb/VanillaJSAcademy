@@ -26,5 +26,6 @@ img {
 }
 
 .fave[aria-pressed="true"] {
-	color: red;
+	color: white;
+	background-color: red;
 }
